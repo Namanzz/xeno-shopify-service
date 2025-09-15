@@ -43,18 +43,13 @@ export default function Dashboard() {
     }
   };
 
-  // This effect runs only once to load the initial data when the page loads.
   useEffect(() => {
     fetchData();
   }, []);
 
-  // This effect sets up the WebSocket connection for real-time updates.
   useEffect(() => {
     if (!API_BASE_URL) return;
-    // In a deployed environment, the socket should connect to the same host as the window.
-    // This avoids hardcoding the URL. For local dev, we still need the base URL.
-    const socketURL = process.env.NODE_ENV === 'production' ? window.location.origin : API_BASE_URL;
-    const socket = io(socketURL);
+    const socket = io(API_BASE_URL);
 
     socket.on('connect', () => {
       console.log('Connected to WebSocket server!');
@@ -70,12 +65,10 @@ export default function Dashboard() {
     };
   }, []);
 
-  // Corrected custom formatter for the chart tooltip
   const customTooltipFormatter = (value: ValueType, name: NameType): [string, NameType] => {
     if (name === 'Revenue') {
       return [`₹${Number(value).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, name];
     }
-    // All other values (like Orders) are returned as is.
     return [`${value}`, name];
   };
 
@@ -122,7 +115,6 @@ export default function Dashboard() {
   );
 }
 
-// StatCard component with updated styles
 const StatCard = ({ title, value }: { title: string; value: string | number }) => (
   <div className="bg-white p-6 rounded-lg shadow">
     <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wider">{title}</h3>
