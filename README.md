@@ -7,10 +7,6 @@
 * **Frontend Dashboard:** `xeno-shopify-service-b7t1.vercel.app`
 * **Backend Service:** `https://xeno-shopify-service-nm9i.onrender.com`
 
-## 🎥 Demo Video
-
-[YOUR_DEMO_VIDEO_LINK_HERE]
-
 ## ✨ Features
 
 *  **Multi-Tenant Data Ingestion:** Connects to multiple Shopify stores, isolating data by a unique tenant identifier[cite: 18].
