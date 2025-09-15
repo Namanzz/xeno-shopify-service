@@ -4,7 +4,7 @@
 
 ## 🚀 Live Demo
 
-* **Frontend Dashboard:** `[YOUR_DEPLOYED_FRONTEND_URL_HERE]`
+* **Frontend Dashboard:** `xeno-shopify-service-b7t1.vercel.app`
 * **Backend Service:** `https://xeno-shopify-service-nm9i.onrender.com`
 
 ## 🎥 Demo Video
@@ -150,8 +150,8 @@ model Order {
 ### 1. Clone the Repository
 
 ```bash
-git clone [YOUR_REPOSITORY_URL]
-cd [YOUR_REPOSITORY_NAME]
+git clone https://github.com/Namanzz/xeno-shopify-service
+cd xeno-shopify-service
 ```
 
 ### 2. Backend Setup
