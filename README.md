@@ -1,6 +1,6 @@
 # Xeno FDE Internship Assignment: Shopify Insights Service
 
-[cite_start]This project is a multi-tenant Shopify Data Ingestion & Insights Service, built as part of the Xeno Forward Deployed Engineer (FDE) Internship assignment[cite: 1, 3]. [cite_start]It demonstrates a full-stack application that connects to Shopify stores, ingests key e-commerce data, and visualizes it on a real-time dashboard[cite: 6].
+ This project is a multi-tenant Shopify Data Ingestion & Insights Service, built as part of the Xeno Forward Deployed Engineer (FDE) Internship assignment[cite: 1, 3].  It demonstrates a full-stack application that connects to Shopify stores, ingests key e-commerce data, and visualizes it on a real-time dashboard[cite: 6].
 
 ## 🚀 Live Demo
 
@@ -13,19 +13,19 @@
 
 ## ✨ Features
 
-* [cite_start]**Multi-Tenant Data Ingestion:** Connects to multiple Shopify stores, isolating data by a unique tenant identifier[cite: 18].
-* [cite_start]**Automated Data Sync:** Uses Shopify Webhooks to automatically update orders in real-time as they are created[cite: 36].
+*  **Multi-Tenant Data Ingestion:** Connects to multiple Shopify stores, isolating data by a unique tenant identifier[cite: 18].
+*  **Automated Data Sync:** Uses Shopify Webhooks to automatically update orders in real-time as they are created[cite: 36].
 * **Manual Sync:** An API endpoint to trigger a full, idempotent sync of all products, customers, and orders.
-* [cite_start]**Real-time Insights Dashboard:** A clean, responsive dashboard built with Next.js and Recharts to visualize key metrics[cite: 23, 44].
-* [cite_start]**Key Metrics:** Displays total revenue, orders, customers, top 5 customers by spend, and a chart of revenue and orders over time[cite: 24, 25, 26].
+*  **Real-time Insights Dashboard:** A clean, responsive dashboard built with Next.js and Recharts to visualize key metrics[cite: 23, 44].
+*  **Key Metrics:** Displays total revenue, orders, customers, top 5 customers by spend, and a chart of revenue and orders over time[cite: 24, 25, 26].
 * **Live Updates:** The dashboard updates automatically without a page reload when new orders are received, using WebSockets for real-time communication.
 
 ## 🛠️ Tech Stack
 
-* [cite_start]**Backend:** Node.js, Express.js, Prisma ORM, Socket.IO [cite: 40]
-* [cite_start]**Frontend:** Next.js, React, TypeScript, Tailwind CSS, Recharts [cite: 41, 44]
-* [cite_start]**Database:** PostgreSQL [cite: 42]
-* [cite_start]**Deployment:** Render (Backend & DB), Vercel (Frontend) [cite: 35]
+*  **Backend:** Node.js, Express.js, Prisma ORM, Socket.IO [cite: 40]
+*  **Frontend:** Next.js, React, TypeScript, Tailwind CSS, Recharts [cite: 41, 44]
+*  **Database:** PostgreSQL [cite: 42]
+*  **Deployment:** Render (Backend & DB), Vercel (Frontend) [cite: 35]
 
 ## 🏗️ Architecture Diagram
 
@@ -189,9 +189,9 @@ The frontend development server will be running on `http://localhost:3000`.
 
 ## 📝 Assumptions & Limitations
 
-* **Single Tenant Dashboard:** The current dashboard displays data for the first tenant found in the database (`prisma.tenant.findFirst()`). [cite_start]A full production app would require user authentication to select the appropriate tenant[cite: 38].
+* **Single Tenant Dashboard:** The current dashboard displays data for the first tenant found in the database (`prisma.tenant.findFirst()`).  A full production app would require user authentication to select the appropriate tenant[cite: 38].
 * **Security:** Shopify tokens and secrets are stored as plain text in the database and environment variables. In a production environment, these should be encrypted at rest.
-* **Webhook Scalability:** All webhooks are processed synchronously. [cite_start]For high-volume stores, this process should be made asynchronous using a message queue (like RabbitMQ or Redis) to ensure reliability and performance[cite: 43].
+* **Webhook Scalability:** All webhooks are processed synchronously.  For high-volume stores, this process should be made asynchronous using a message queue (like RabbitMQ or Redis) to ensure reliability and performance[cite: 43].
 
 ## 🚀 Next Steps for Production
 
