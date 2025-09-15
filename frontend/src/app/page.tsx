@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
 import io from 'socket.io-client';
-
-// Define types for our data to use with TypeScript
 interface Overview {
   totalCustomers: number;
   totalOrders: number;
@@ -25,8 +23,6 @@ export default function Dashboard() {
   const [ordersByDate, setOrdersByDate] = useState<OrderData[]>([]);
   const [topCustomers, setTopCustomers] = useState<CustomerData[]>([]);
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-  // This function fetches all the data for the dashboard.
   const fetchData = async () => {
     try {
       console.log('Fetching updated data...');
