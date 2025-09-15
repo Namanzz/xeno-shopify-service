@@ -18,7 +18,7 @@ const httpServer = createServer(app);
 
 const io = new SocketIOServer(httpServer, {
   cors: {
-    origin: "https://xeno-shopify-service-nm9i.onrender.com",
+    origin: "https://xeno-shopify-service-b7t1.vercel.app",
     methods: ['GET', 'POST'],
   },
 });
