@@ -10,7 +10,7 @@ import cors from "cors";
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import axios from "axios";
-import "dotenv/config"; // Loads .env file
+import "dotenv/config";
 
 const app = express();
 const prisma = new PrismaClient();
@@ -19,13 +19,13 @@ const PORT = process.env.PORT || 3001;
 const httpServer = createServer(app);
 const io = new SocketIOServer(httpServer, {
   cors: {
-    origin: "http://localhost:3000", // Allow your frontend to connect
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"]
   }
 });
 
 app.get("/", (req, res) => {
-  res.send("🚀 Shopify Backend is running");
+  res.send("Shopify Backend is running");
 });
 
 app.post(
@@ -37,7 +37,6 @@ app.post(
     const shopDomain = req.get("X-Shopify-Shop-Domain");
     const secret = process.env.SHOPIFY_WEBHOOK_SECRET!;
 
-    // ✅ Use raw buffer
     const rawBody = Buffer.from(req.body);
 
     const genHash = crypto
@@ -46,7 +45,7 @@ app.post(
   .digest("base64");
 
     if (genHash === hmac) {
-      console.log("✅ Webhook verified successfully!");
+      console.log("Webhook verified successfully!");
       try {
         const payload = JSON.parse(rawBody.toString());
 
@@ -72,37 +71,32 @@ app.post(
                 tenantId: tenant.id,
               },
             });
-            console.log(`📦 Processed new order webhook: ${order.id}`);
+            console.log(`Processed new order webhook: ${order.id}`);
             io.emit('data_updated');
           }
         }
 
         res.sendStatus(200);
       } catch (error) {
-        console.error("❌ Error processing webhook:", error);
+        console.error("Error processing webhook:", error);
         res.sendStatus(500);
       }
     } else {
-      console.log("❌ Webhook verification failed.");
+      console.log("Webhook verification failed.");
       res.sendStatus(403);
     }
   }
 );
 
-// 🟡 Other middlewares AFTER webhook
 app.use(express.json());
 app.use(cors());
 
-/**
- * 🟢 Trigger a full data sync for a tenant
- */
 app.post("/api/tenants/sync", async (req, res) => {
   console.log("Sync process started...");
   const shopifyStoreDomain = process.env.SHOPIFY_STORE_DOMAIN!;
   const shopifyAdminAccessToken = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN!;
 
   try {
-    // 1. Create or find tenant
     const tenant = await prisma.tenant.upsert({
       where: { shopifyDomain: shopifyStoreDomain },
       update: { shopifyAccessToken: shopifyAdminAccessToken },
@@ -115,7 +109,6 @@ app.post("/api/tenants/sync", async (req, res) => {
 
     const headers = { "X-Shopify-Access-Token": tenant.shopifyAccessToken };
 
-    // 2. Ingest Products
     const productsResponse = await axios.get(
       `https://${tenant.shopifyDomain}/admin/api/2024-07/products.json`,
       { headers }
@@ -137,7 +130,6 @@ app.post("/api/tenants/sync", async (req, res) => {
     }
     console.log(`Synced ${productsResponse.data.products.length} products.`);
 
-    // 3. Ingest Customers
     const customersResponse = await axios.get(
       `https://${tenant.shopifyDomain}/admin/api/2024-07/customers.json`,
       { headers }
@@ -163,7 +155,6 @@ app.post("/api/tenants/sync", async (req, res) => {
     }
     console.log(`Synced ${customersResponse.data.customers.length} customers.`);
 
-    // 4. Ingest Orders
     const ordersResponse = await axios.get(
       `https://${tenant.shopifyDomain}/admin/api/2024-07/orders.json?status=any`,
       { headers }
@@ -187,19 +178,17 @@ app.post("/api/tenants/sync", async (req, res) => {
     }
     console.log(`Synced ${ordersResponse.data.orders.length} orders.`);
 
-    res.status(200).json({ message: "✅ Sync completed successfully!" });
+    res.status(200).json({ message: "Sync completed successfully!" });
   } catch (error: any) {
     console.error(
-      "❌ Sync failed:",
+      "Sync failed:",
       error.response ? error.response.data : error.message
     );
     res.status(500).json({ message: "Sync failed" });
   }
 });
 
-/**
- * 🟢 Overview metrics
- */
+
 app.get("/api/metrics/overview", async (req, res) => {
   const tenant = await prisma.tenant.findFirst();
   if (!tenant) return res.status(404).json({ error: "Tenant not found" });
@@ -222,9 +211,7 @@ app.get("/api/metrics/overview", async (req, res) => {
   });
 });
 
-/**
- * 🟢 Orders by date
- */
+
 app.get("/api/metrics/orders-by-date", async (req, res) => {
   const tenant = await prisma.tenant.findFirst();
   if (!tenant) return res.status(404).json({ error: "Tenant not found" });
@@ -250,9 +237,7 @@ app.get("/api/metrics/orders-by-date", async (req, res) => {
   res.json(Object.values(ordersByDate));
 });
 
-/**
- * 🟢 Top 5 customers
- */
+
 app.get("/api/metrics/top-customers", async (req, res) => {
   const tenant = await prisma.tenant.findFirst();
   if (!tenant) return res.status(404).json({ error: "Tenant not found" });
