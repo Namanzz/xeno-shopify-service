@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [overview, setOverview] = useState<Overview | null>(null);
   const [ordersByDate, setOrdersByDate] = useState<OrderData[]>([]);
   const [topCustomers, setTopCustomers] = useState<CustomerData[]>([]);
-  const API_BASE_URL = 'http://localhost:3001';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   // This function fetches all the data for the dashboard.
   const fetchData = async () => {
@@ -50,6 +50,7 @@ export default function Dashboard() {
 
   // This effect sets up the WebSocket connection for real-time updates.
   useEffect(() => {
+    if (!API_BASE_URL) return;
     // In a deployed environment, the socket should connect to the same host as the window.
     // This avoids hardcoding the URL. For local dev, we still need the base URL.
     const socketURL = process.env.NODE_ENV === 'production' ? window.location.origin : API_BASE_URL;
