@@ -25,6 +25,10 @@ const io = new SocketIOServer(httpServer, {
 
 app.use(cors());
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log(`[Request Logger] Path: ${req.path}`);
+  next();
+});
 
 app.get('/', (req, res) => {
   res.send('Shopify Backend is running');

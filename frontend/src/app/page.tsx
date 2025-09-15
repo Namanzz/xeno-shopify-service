@@ -23,21 +23,27 @@ export default function Dashboard() {
   const [ordersByDate, setOrdersByDate] = useState<OrderData[]>([]);
   const [topCustomers, setTopCustomers] = useState<CustomerData[]>([]);
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const fetchData = async () => {
-    try {
-      console.log('Fetching updated data...');
-      const overviewRes = await fetch(`${API_BASE_URL}/api/metrics/overview`);
-      setOverview(await overviewRes.json());
+  // In frontend/src/app/page.tsx
+const fetchData = async () => {
+  try {
+    const overviewURL = `${API_BASE_URL}/api/metrics/overview`;
+    console.log("Frontend is requesting:", overviewURL); // <-- ADD THIS
+    const overviewRes = await fetch(overviewURL);
+    setOverview(await overviewRes.json());
 
-      const ordersRes = await fetch(`${API_BASE_URL}/api/metrics/orders-by-date`);
-      setOrdersByDate(await ordersRes.json());
-      
-      const customersRes = await fetch(`${API_BASE_URL}/api/metrics/top-customers`);
-      setTopCustomers(await customersRes.json());
-    } catch (error) {
-      console.error("Failed to fetch dashboard data:", error);
-    }
-  };
+    const ordersURL = `${API_BASE_URL}/api/metrics/orders-by-date`;
+    console.log("Frontend is requesting:", ordersURL); // <-- ADD THIS
+    const ordersRes = await fetch(ordersURL);
+    setOrdersByDate(await ordersRes.json());
+
+    const customersURL = `${API_BASE_URL}/api/metrics/top-customers`;
+    console.log("Frontend is requesting:", customersURL); // <-- ADD THIS
+    const customersRes = await fetch(customersURL);
+    setTopCustomers(await customersRes.json());
+  } catch (error) {
+    console.error("Failed to fetch dashboard data:", error);
+  }
+};
 
   useEffect(() => {
     fetchData();
