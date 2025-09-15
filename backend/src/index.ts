@@ -29,6 +29,9 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Shopify Backend is running');
 });
+app.get('/version-check', (req, res) => {
+  res.send('Backend version 2 is live!');
+});
 
 app.post('/api/tenants/sync', async (req, res) => {
   console.log("Sync process started...");
