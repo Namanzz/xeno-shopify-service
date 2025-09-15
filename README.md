@@ -5,7 +5,7 @@
 ## 🚀 Live Demo
 
 * **Frontend Dashboard:** `[YOUR_DEPLOYED_FRONTEND_URL_HERE]`
-* **Backend Service:** `[YOUR_DEPLOYED_BACKEND_URL_HERE]`
+* **Backend Service:** `https://xeno-shopify-service-nm9i.onrender.com`
 
 ## 🎥 Demo Video
 

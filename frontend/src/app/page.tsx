@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, TooltipProps } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
-import io from 'socket.io-client'; // Import the socket.io client library
+import io from 'socket.io-client';
 
 // Define types for our data to use with TypeScript
 interface Overview {
@@ -27,7 +27,6 @@ export default function Dashboard() {
   const API_BASE_URL = 'http://localhost:3001';
 
   // This function fetches all the data for the dashboard.
-  // We've moved it here so it can be called from multiple places.
   const fetchData = async () => {
     try {
       console.log('Fetching updated data...');
@@ -49,48 +48,34 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-  // NEW: This effect sets up the WebSocket connection for real-time updates.
+  // This effect sets up the WebSocket connection for real-time updates.
   useEffect(() => {
-    const socket = io(API_BASE_URL);
+    // In a deployed environment, the socket should connect to the same host as the window.
+    // This avoids hardcoding the URL. For local dev, we still need the base URL.
+    const socketURL = process.env.NODE_ENV === 'production' ? window.location.origin : API_BASE_URL;
+    const socket = io(socketURL);
 
     socket.on('connect', () => {
       console.log('Connected to WebSocket server!');
     });
 
-    // Listen for the 'data_updated' event from the server
     socket.on('data_updated', () => {
       console.log('Received data_updated event. Re-fetching data.');
-      fetchData(); // Re-run the data fetch function
+      fetchData();
     });
 
-    // Cleanup function to disconnect the socket when the component is no longer on the screen
     return () => {
       socket.disconnect();
     };
-  }, []); // The empty array ensures this effect also runs only once.
+  }, []);
 
-  // Your custom formatter for the chart tooltip
-  const customTooltipFormatter = (value: ValueType, name: NameType, item: any): [string | number, NameType] => {
+  // Corrected custom formatter for the chart tooltip
+  const customTooltipFormatter = (value: ValueType, name: NameType): [string, NameType] => {
     if (name === 'Revenue') {
-      // Format as Indian Rupees
       return [`₹${Number(value).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, name];
     }
-    if (name === 'Orders') {
-      // Return as a plain number
-      if (typeof value === 'number' || typeof value === 'string') {
-        return [value, name];
-      }
-      if (Array.isArray(value)) {
-        return [value.join(', '), name];
-      }
-    }
-    if (typeof value === 'number' || typeof value === 'string') {
-      return [value, name];
-    }
-    if (Array.isArray(value)) {
-      return [value.join(', '), name];
-    }
-    return [String(value), name];
+    // All other values (like Orders) are returned as is.
+    return [`${value}`, name];
   };
 
   return (
