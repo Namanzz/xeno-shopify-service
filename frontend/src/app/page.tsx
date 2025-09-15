@@ -22,7 +22,7 @@ export default function Dashboard() {
   const [overview, setOverview] = useState<Overview | null>(null);
   const [ordersByDate, setOrdersByDate] = useState<OrderData[]>([]);
   const [topCustomers, setTopCustomers] = useState<CustomerData[]>([]);
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const API_BASE_URL = "https://xeno-shopify-service-nm9i.onrender.com";
   // In frontend/src/app/page.tsx
 const fetchData = async () => {
   try {
